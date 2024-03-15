@@ -1,47 +1,37 @@
 var students = [
-    {
-        id: 1,
-        name: "Eufranor",
-        email: "eufranorfilho@outlook.com",
-        phone: "84999234422",
-        course: 1,
-        period: 1
-    },
-    {
-        id: 2,
-        name: "João",
-        email: "João@outlook.com",
-        phone: "849982234455",
-        course: 2,
-        period: 2
-    }
 
 ];
 var courses = [
-    {
-        id: 1,
-        name: "Engenharia de Software"
-    },
-    {
-        id: 2,
-        name: "Ciência da computação"
-    }
+   
 ];
 //Onload
-loadStudents()
-
+loadCourses();
+loadStudents();
 function loadStudents(){
-    for(let student of students){
+    fetch('http://localhost:8080/students')
+    .then(response => response.json())
+    .then((data) =>{
+        students = data
+        for(let student of students){
         addNewRow(student);
-    }
+        }
+    }).catch(error => {
+        console.error('Erro ao carregar os alunos:', error);
+    });
+    
 }
 
-   // $.getJSON('http://localhost:8080/students', response => {
-     //   for (let student of students){
-           // addNewRow(student);
-      //  }
-    //})}
-    function addNewRow(student) {
+function loadCourses(){
+   return fetch('http://localhost:8080/courses')
+    .then(response => response.json())
+    .then(data => {
+        courses = data;
+    })
+    .catch(error => {
+        console.error('Erro ao carregar os cursos:', error);
+    });
+}
+function addNewRow(student) {
         var table = document.getElementById('studentsTable');
         var newRow = table.insertRow();
         
@@ -59,8 +49,12 @@ function loadStudents(){
         phoneCell.textContent = student.phone;
         phoneCell.className = "d-none d-md-table-cell";
     
+        var courseName = '';
+        if (student.idCourse >= 1 && student.idCourse <= courses.length) {
+            courseName = courses[student.idCourse - 1].name;
+            }
         var courseCell = newRow.insertCell();
-        courseCell.textContent = courses[student.course - 1].name;
+        courseCell.textContent = courseName;
     
         var periodCell = newRow.insertCell();
         periodCell.textContent = student.period;
@@ -87,7 +81,7 @@ function save(){
         name: document.getElementById("inputName").value,
         email: document.getElementById("inputEmail").value,
         phone: document.getElementById('inputPhone').value,
-        course: document.getElementById('inputCourse').value,
+        idCourse: document.getElementById('inputCourse').value,
         period: document.getElementById('inputPeriod').value
     }
    

@@ -29,7 +29,7 @@ public class StudentController {
 
         Students st01 = new Students(1, "João", "joaodoria@gmail.com", "84999838432", 1, 1);
         Students st02 = new Students(2, "Maria", "maria@gmail.com", "84998003455", 2, 2);
-        Students st03 = new Students(3, "Eufranor", "eufranorfilho@gmail.com", "8498343322", 3, 4);
+        Students st03 = new Students(3, "Eufranor", "eufranorfilho@gmail.com", "8498343322", 2, 4);
 
         students.add(st01);
         students.add(st02);
